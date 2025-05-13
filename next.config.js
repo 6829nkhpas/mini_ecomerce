@@ -10,6 +10,11 @@ const nextConfig = {
       },
     ];
   },
+  output: "export",
+  images: {
+    unoptimized: true,
+  },
+  basePath: "/mini_ecomerce",
 };
 
 module.exports = nextConfig;
