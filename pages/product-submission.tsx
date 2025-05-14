@@ -1,7 +1,9 @@
 import { useState } from "react";
 import Layout from "../components/Layout";
+import { useRouter } from "next/router";
 
 export default function ProductSubmission() {
+  const router = useRouter();
   const [formData, setFormData] = useState({
     name: "",
     price: "",
@@ -12,20 +14,35 @@ export default function ProductSubmission() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await fetch("/api/products", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+      // Get existing products from localStorage
+      const existingProducts = JSON.parse(
+        localStorage.getItem("products") || "[]"
+      );
 
-      if (response.ok) {
-        setFormData({ name: "", price: "", description: "", imageUrl: "" });
-        alert("Product submitted successfully!");
-      } else {
-        alert("Error submitting product");
-      }
+      // Create new product
+      const newProduct = {
+        id: Date.now(), // Use timestamp as ID
+        name: formData.name,
+        price: parseFloat(formData.price),
+        description: formData.description,
+        imageUrl: formData.imageUrl || "",
+        createdAt: new Date().toISOString(),
+      };
+
+      // Add new product to array
+      const updatedProducts = [...existingProducts, newProduct];
+
+      // Save to localStorage
+      localStorage.setItem("products", JSON.stringify(updatedProducts));
+
+      // Clear form
+      setFormData({ name: "", price: "", description: "", imageUrl: "" });
+
+      // Show success message
+      alert("Product submitted successfully!");
+
+      // Redirect to products page
+      router.push("/my-products");
     } catch (error) {
       console.error("Error:", error);
       alert("Error submitting product");

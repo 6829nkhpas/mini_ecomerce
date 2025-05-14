@@ -19,13 +19,12 @@ export default function MyProducts() {
     fetchProducts();
   }, []);
 
-  const fetchProducts = async () => {
+  const fetchProducts = () => {
     try {
-      const response = await fetch("/api/products");
-      if (response.ok) {
-        const data = await response.json();
-        setProducts(data);
-      }
+      const storedProducts = JSON.parse(
+        localStorage.getItem("products") || "[]"
+      );
+      setProducts(storedProducts);
     } catch (error) {
       console.error("Error fetching products:", error);
     } finally {
@@ -33,19 +32,13 @@ export default function MyProducts() {
     }
   };
 
-  const handleDelete = async (id: number) => {
+  const handleDelete = (id: number) => {
     if (window.confirm("Are you sure you want to delete this product?")) {
       try {
-        const response = await fetch(`/api/products/${id}`, {
-          method: "DELETE",
-        });
-
-        if (response.ok) {
-          setProducts(products.filter((product) => product.id !== id));
-          alert("Product deleted successfully!");
-        } else {
-          alert("Error deleting product");
-        }
+        const updatedProducts = products.filter((product) => product.id !== id);
+        localStorage.setItem("products", JSON.stringify(updatedProducts));
+        setProducts(updatedProducts);
+        alert("Product deleted successfully!");
       } catch (error) {
         console.error("Error deleting product:", error);
         alert("Error deleting product");
