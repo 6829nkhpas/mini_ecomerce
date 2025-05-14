@@ -14,7 +14,7 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  basePath: "/mini_ecomerce",
+  basePath: "/mini-ecommerce",
 };
 
 module.exports = nextConfig;
