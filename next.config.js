@@ -15,6 +15,8 @@ const nextConfig = {
     unoptimized: true,
   },
   basePath: "/mini-ecommerce",
+  assetPrefix: "/mini-ecommerce/",
+  trailingSlash: true,
 };
 
 module.exports = nextConfig;
