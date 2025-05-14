@@ -6,9 +6,11 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  basePath: "/mini-ecommerce",
-  assetPrefix: "/mini-ecommerce/",
+  basePath: "/mini_ecommerce",
+  assetPrefix: "/mini_ecommerce/",
   trailingSlash: true,
+  // Ensure static files are properly handled
+  distDir: "out",
 };
 
 module.exports = nextConfig;
